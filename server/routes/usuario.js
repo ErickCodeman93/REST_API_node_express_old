@@ -6,9 +6,11 @@ const _ = require('underscore');
 
 const Usuario = require('../models/usuario');
 
+const { verificaToken, verificaAdminRole } = require('../middlewares/auth');
+
 const app = express();
 
-app.get('/usuario', function (req, res) {
+app.get('/usuario', verificaToken , (req, res) => {
 
 	let desde = req.query.desde || 0;
 	desde = Number( desde );
@@ -34,13 +36,14 @@ app.get('/usuario', function (req, res) {
 						ok:true,
 						usuarios,
 						conteo,
+						admin: req.usuario
 					});
 				});
 			} );
 	
 });
   
-app.post('/usuario', function (req, res) {
+app.post('/usuario', [ verificaToken, verificaAdminRole ], (req, res) => {
   
 	let body = req.body
 
@@ -65,13 +68,14 @@ app.post('/usuario', function (req, res) {
 		res.json({
 			ok:true,
 			usuario: usuarioDB,
+			admin: req.usuario
 		});
 
 	});
   
 });
   
-app.put('/usuario/:id', function (req, res) {
+app.put('/usuario/:id', [ verificaToken, verificaAdminRole ], (req, res) => {
 
 	let id = req.params.id;
 
@@ -89,12 +93,13 @@ app.put('/usuario/:id', function (req, res) {
 		res.json({
 			ok:true,
 			usuario: usuarioDB,
+			admin: req.usuario
 		});
 	});
 
 });
   
-app.delete('/usuario/:id', function (req, res) {
+app.delete('/usuario/:id',[ verificaToken, verificaAdminRole ], (req, res) => {
 
 	let id = req.params.id;
 
@@ -123,6 +128,7 @@ app.delete('/usuario/:id', function (req, res) {
 		res.json({
 			ok:true,
 			usuario: user,
+			admin: req.usuario
 		});
 
 	} );

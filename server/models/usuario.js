@@ -41,7 +41,7 @@ let usuarioSchema = new Schema({
 	}, //Boolean
 });
 
-usuarioSchema.method.toJSON = function () {
+usuarioSchema.methods.toJSON = function () {
 	
 	let user = this;
 	let userObject = user.toObject();
