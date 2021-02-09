@@ -56,12 +56,14 @@ app.post('/usuario', [ verificaToken, verificaAdminRole ], (req, res) => {
 
 	usuario.save( ( err, usuarioDB ) => {
 
-		if( err ){
-			return res.status( 400 ).json({
+		if( err )
+			return res
+					.status( 400 )
+					.json({
 						ok: false,
 						err,
 					});	
-		} //end if
+		
 
 		// usuarioDB.password = null;
 
